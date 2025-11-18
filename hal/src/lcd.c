@@ -83,8 +83,6 @@ void lcd_reset() {
 void lcd_init(int fd) {
     lcd_reset();
 
-    printf("inside lcd_init.\n");
-
     lcd_cmd(fd, 0x36); // MADCTL
     lcd_data(fd, 0x60);
 
@@ -100,7 +98,6 @@ void lcd_init(int fd) {
 }
 
 void lcd_fill(int fd, uint16_t color) {
-    printf("inside lcd_fill.\n");
 
     int x1 = x0 + 239;
     int y1 = y0 + 134;
@@ -120,11 +117,6 @@ void lcd_fill(int fd, uint16_t color) {
     lcd_cmd(fd, 0x2C);
 
     gpio_write(6, 1);  // DC = data
-
-    int a = gpiod_line_request_get_value(req, offset[0]);
-    int b = gpiod_line_request_get_value(req, offset[1]);
-    printf("GPIO5 = %d\n", a);
-    printf("GPIO6 = %d\n", b);
 
     uint8_t buf[2] = { color >> 8, color & 0xFF };
 
