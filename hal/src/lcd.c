@@ -1,5 +1,7 @@
 #include "hal/lcd.h"
 
+#define SAMPLE_SIZE 1200 // write cant handle too many bytes (found out hard way lol)
+
 static struct gpiod_chip* chip2;
 static unsigned int offset[2] = {15, 17};
 static struct gpiod_line_config *config;
@@ -7,8 +9,15 @@ static struct gpiod_line_settings *settings;
 static struct gpiod_request_config *req_cfg;
 static struct gpiod_line_request *req;
 
+// offsets (lcd doesnt start at 0, 0)
 static int x0 = 40;
 static int y0 = 53;
+
+static uint8_t actualBuff[240 * 135 * 2];
+static volatile int hasChanged = 0;
+volatile int isDrawing = 0;
+
+pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 int spi_init() {
     int fd = open("/dev/spidev0.1", O_RDWR);
@@ -59,17 +68,16 @@ void gpio_write(int pin, int value) {
         i = 1;
     }
 
-    // Now you can set values for either line
     gpiod_line_request_set_value(req, offset[i], value);   // line 15 high
 }
 
 void lcd_cmd(int fd, uint8_t cmd) {
-    gpio_write(6, 0);     // DC=0 → command
+    gpio_write(6, 0);     // DC=0 -> command
     write(fd, &cmd, 1);
 }
 
 void lcd_data(int fd, uint8_t data) {
-    gpio_write(6, 1);     // DC=1 → data
+    gpio_write(6, 1);     // DC=1 -> data
     write(fd, &data, 1);
 }
 
@@ -97,61 +105,80 @@ void lcd_init(int fd) {
     lcd_cmd(fd, 0x29); // Display ON
 }
 
-void lcd_fill(int fd, uint16_t color) {
-
-    int x1 = x0 + 239;
-    int y1 = y0 + 134;
-
-    lcd_cmd(fd, 0x2A);        // Column address set
-    lcd_data(fd, x0 >> 8);
-    lcd_data(fd, x0 & 0xFF);
-    lcd_data(fd, x1 >> 8);
-    lcd_data(fd, x1 & 0xFF);
-
-    lcd_cmd(fd, 0x2B);        // Row address set
-    lcd_data(fd, y0 >> 8);
-    lcd_data(fd, y0 & 0xFF);
-    lcd_data(fd, y1 >> 8);
-    lcd_data(fd, y1 & 0xFF);
-
-    lcd_cmd(fd, 0x2C);
-
-    gpio_write(6, 1);  // DC = data
-
-    uint8_t buf[2] = { color >> 8, color & 0xFF };
-
-    for (int i = 0; i < 240 * 135; i++)
-        if (write(fd, buf, 2) != 2)
-            perror("SPI write failed");
-
-}
-
-void lcd_draw_pixel(int fd, int x, int y, uint16_t color) {
-    lcd_cmd(fd, 0x2A);        // Column address set
+void setSpace(int fd, int x, int y, int xLen, int yLen) {
+    lcd_cmd(fd, 0x2A);        // Column address set (note: lcd takes in 2 bytes per pixel)
     lcd_data(fd, (x + x0) >> 8);
     lcd_data(fd, (x + x0) & 0xFF);
-    lcd_data(fd, (x + x0) >> 8);
-    lcd_data(fd, (x + x0) & 0xFF);
+    lcd_data(fd, (x + x0 + xLen - 1) >> 8);
+    lcd_data(fd, (x + x0 + xLen - 1) & 0xFF);
 
     lcd_cmd(fd, 0x2B);        // Row address set
     lcd_data(fd, (y + y0) >> 8);
     lcd_data(fd, (y + y0) & 0xFF);
-    lcd_data(fd, (y + y0) >> 8);
-    lcd_data(fd, (y + y0) & 0xFF);   
+    lcd_data(fd, (y + y0 + yLen - 1) >> 8);
+    lcd_data(fd, (y + y0 + yLen - 1) & 0xFF);
+}
 
-    lcd_cmd(fd, 0x2C);
+void lcd_fill(int fd, uint16_t color) {
+    for (int i = 0; i < 240 * 135; i++) {
+        actualBuff[2*i] = (color >> 8);
+        actualBuff[2*i + 1] = (color & 0xFF);
+    }
+    pthread_mutex_lock(&lock);
+    hasChanged = 1;
+    pthread_mutex_unlock(&lock);
+}
 
-    gpio_write(6, 1);  // DC = data
+void* sendScreen(void* arg) {
+    int fd = *(int*)arg;
+    printf("started.\n");
+    while (1) {
+        pthread_mutex_lock(&lock);
+        int update = hasChanged && (!isDrawing);
+        pthread_mutex_unlock(&lock);
 
-    uint8_t buf[2] = { color >> 8, color & 0xFF };
+        update = 0;
+        if (update) {
+            printf("sending data\n");
+            setSpace(fd, 0, 0, 240, 135);
+            lcd_cmd(fd, 0x2C);
+            gpio_write(6, 1);
+            for (int i = 0; i < (240*135*2 / SAMPLE_SIZE); i++) {
+                write(fd, actualBuff + i * SAMPLE_SIZE, SAMPLE_SIZE);
+            } 
 
-    write(fd, buf, 2);
+            pthread_mutex_lock(&lock);
+            hasChanged = 0;
+            pthread_mutex_unlock(&lock);
+        }
+        usleep(1000);
+    }
+    return NULL;
+}
+
+void lcd_draw_pixel(int fd, int x, int y, uint16_t color) {
+    actualBuff[2 * (y * 240 + x)] = (color >> 8);
+    actualBuff[2 * (y * 240 + x) + 1] = (color & 0xFF);
+    pthread_mutex_lock(&lock);
+    hasChanged = 1;
+    pthread_mutex_unlock(&lock);
 }
 
 void lcd_close(int fd) {
     close(fd);
     gpiod_line_request_release(req);
+    gpiod_line_settings_free(settings);   // free settings
     gpiod_line_config_free(config);       // free line config
     gpiod_request_config_free(req_cfg);   // free request config
     gpiod_chip_close(chip2); 
+}
+
+void test(int fd) {
+    printf("sending data\n");
+    setSpace(fd, 0, 0, 240, 135);
+    lcd_cmd(fd, 0x2C);
+    gpio_write(6, 1);
+    for (int i = 0; i < (240*135*2 / SAMPLE_SIZE); i++) {
+        write(fd, actualBuff + i * SAMPLE_SIZE, SAMPLE_SIZE);
+    } 
 }

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "mp3_decoder.h"
 
 typedef struct {
     char* name;

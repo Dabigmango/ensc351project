@@ -8,7 +8,9 @@ typedef struct {
 
 static Library* lib;
 
-Playlist* pCurrent = NULL;
+static Playlist* pCurrent = NULL;
+
+static Song* currentSong = NULL;
 
 Playlist* findPlaylist(const char *name) {
     for (int i = 0; i < lib->numPlaylists; i++) {
@@ -163,15 +165,16 @@ void freeAll(void) {
 }
 
 void getInput(void) {
-    int inputNum;
+    char inputNum[100];
     char inputName[100];
     char inputPath[100];
     printf("What would you like to do?\n");
-    scanf("%d", &inputNum);
-    switch (inputNum) {
+    fgets(inputNum, 99, stdin);
+    int num = atoi(inputNum);
+    switch (num) {
         case 0: // add playlist
             printf("What would you like to name the playlist? \n");
-            scanf("%99s", inputName);
+            fgets(inputName, 99, stdin);
             if (findPlaylist(inputName) == NULL) {
                 addPlaylist(inputName);
                 break;
@@ -185,7 +188,7 @@ void getInput(void) {
             break;
         case 2: // open playlist
             printf("Which playlist would you like to open? \n");
-            scanf("%99s", inputName);
+            fgets(inputName, 99, stdin);
             if (findPlaylist(inputName) == NULL) {
                 printf("That playlist does not exist. \n");
                 break;
@@ -196,24 +199,47 @@ void getInput(void) {
             }
         case 3: // delete playlist
             printf("Which playlist would you like to delete? \n");
-            scanf("%99s", inputName);
+            fgets(inputName, 99, stdin);
             deletePlaylist(inputName);
             break;
         case 4: // view playlist
+            if (pCurrent == NULL) {
+                printf("No playlist is currently open.\n");
+                break;
+            }
             viewList(pCurrent);
             break;
         case 5: // add song
+            if (pCurrent == NULL) {
+                printf("No playlist is currently open.\n");
+                break;
+            }
             printf("What song would you like to add? \n");
             printf("Name: ");
-            scanf("%99s", inputName);
+            fgets(inputName, 99, stdin);
             printf("Path: ");
-            scanf("%99s", inputPath);
+            fgets(inputPath, 99, stdin);
             addSong(pCurrent, inputName, inputPath);
             break;
         case 6: // delete song
+            if (pCurrent == NULL) {
+                printf("No playlist is currently open.\n");
+                break;
+            }
             printf("What song would you like to delete? \n");
-            scanf("%99s", inputName);
+            fgets(inputName, 99, stdin);
             deleteSong(pCurrent, inputName);
+            break;
+        case 7: // play song
+            if (pCurrent == NULL) {
+                printf("No playlist is currently open.\n");
+                break;
+            }
+            printf("What song would you like to play?\n");
+            fgets(inputName, 99, stdin);
+            currentSong = findSong(pCurrent, inputName);
+            play_mp3_file(currentSong->path);
+            // play the song
             break;
         case 9:
             freeAll();
@@ -231,6 +257,7 @@ void startup(void) {
     printf("Press 4 to view the current playlist\n");
     printf("Press 5 to add a song to the playlist\n");
     printf("Press 6 to delete a song from the playlist\n");
+    printf("Press 7 to play a song\n");
     printf("Press 9 to quit\n");
     lib = malloc(sizeof(Library));
     lib->numPlaylists = 0;
