@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>
+#include "lcdManager.h"
 #include "mp3_decoder.h"
 
 typedef struct {
@@ -19,6 +21,8 @@ typedef struct {
 } Playlist;
 
 Playlist* findPlaylist(const char* name);
+int getNumPlaylists(void);
+const char* getPlaylistName(int index);
 int findPlaylistIndex(const char* name);
 Song* findSong(Playlist* playlist, const char* name);
 int findSongIndex(Playlist* playlist, const char* name);

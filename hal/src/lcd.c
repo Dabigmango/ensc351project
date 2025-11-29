@@ -131,14 +131,12 @@ void lcd_fill(int fd, uint16_t color) {
 
 void* sendScreen(void* arg) {
     int fd = *(int*)arg;
-    printf("started.\n");
     while (1) {
         pthread_mutex_lock(&lock);
         if (hasChanged && !isDrawing) {
             hasChanged = 0;  // mark it as being processed
             pthread_mutex_unlock(&lock);
 
-            printf("sending data\n");
             setSpace(fd, 0, 0, 240, 135);
             lcd_cmd(fd, 0x2C);
             gpio_write(6, 1);

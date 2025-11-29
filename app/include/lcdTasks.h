@@ -7,7 +7,7 @@
 #include <pthread.h>
 #include "hal/lcd.h"
 
-void asciiToLcd(int fd, const char* inputStr, int x, int y, uint16_t color);
+void asciiToLcd(int fd, const char* inputStr, int x, int y, int fontsize, uint16_t color);
 void fillCircle(int fd, int x, int y, int radius, uint16_t color);
 void fillBar(int fd, int x, int y, int xLen, int yLen, uint16_t color);
 void fillDiamond(int fd, int x, int y, int xDis, int yDis, uint16_t color);

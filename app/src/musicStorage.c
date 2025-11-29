@@ -21,6 +21,14 @@ Playlist* findPlaylist(const char *name) {
     return NULL;
 }
 
+int getNumPlaylists() {
+    return lib->numPlaylists;
+}
+
+const char* getPlaylistName(int index) {
+    return lib->playlists[index].name;
+}
+
 int findPlaylistIndex(const char *name) {
     for (int i = 0; i < lib->numPlaylists; i++) {
         if (strcmp(lib->playlists[i].name, name) == 0) {
@@ -109,6 +117,10 @@ void addPlaylist(const char* nameIn) {
     lib->playlists[lib->numPlaylists].numSongs = 0;
     lib->playlists[lib->numPlaylists].capacity = 0;
     lib->numPlaylists++;
+
+    pthread_mutex_lock(&updateLock);
+    musicPlayerScreenUpdated = 1;
+    pthread_mutex_unlock(&updateLock);
 }
 
 void viewPlaylists(void) {
@@ -141,6 +153,10 @@ void deletePlaylist(const char* name) {
     else {
         printf("Playlist does not exist.\n");
     }
+
+    pthread_mutex_lock(&updateLock);
+    musicPlayerScreenUpdated = 1;
+    pthread_mutex_unlock(&updateLock);
 }
 
 Playlist* openPlaylist(const char* name) {

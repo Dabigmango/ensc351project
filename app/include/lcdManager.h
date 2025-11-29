@@ -22,7 +22,7 @@
 #define CYAN 0x07FF
 #define GREEN 0x07E0  
 
-enum allPages {
+enum allPages { // add songs screen, add current song screen
     MAIN_SCREEN,
     MUSIC_PLAYER_SCREEN,
     ALARM_CLOCK_SCREEN,
@@ -39,13 +39,19 @@ extern enum allPages currentPage;
 extern enum startSelect startSelector;
 
 extern pthread_mutex_t selectorLock;
+extern pthread_mutex_t updateLock;
 
 extern int selectionChanged;
+extern int musicPlayerScreenUpdated;
+
+extern int currentPlaylist;
 
 void startScreen(int fd);
 void musicPlayerIcon(int fd, uint16_t color);
 void alarmClockIcon(int fd, uint16_t color);
 void settingsIcon(int fd, uint16_t color);
+void musicPlayerScreen(int fd);
+void backButton(int fd, uint16_t color);
 void* selector(void* arg);
 
 #endif

@@ -1,5 +1,14 @@
 #include "hal/joystick.h"
 
+static struct gpiod_chip* chip1;
+static unsigned int offset[1] = {38};
+static struct gpiod_line_config *config;
+static struct gpiod_line_settings *settings;
+static struct gpiod_request_config *req_cfg;
+static struct gpiod_line_request *req;
+
+static int isPressed = 0;
+
 static int read_ch(int fd, int ch, uint32_t speed_hz) {
     // fd -> file descriptor, ch -> channel num, speed_hz -> SPI clock speed
     // tx -> request message to ADC, rx -> receive buffer
@@ -23,6 +32,31 @@ static int read_ch(int fd, int ch, uint32_t speed_hz) {
 
     return ((rx[1] & 0x0F) << 8) | rx[2]; // 12-bit result
 }
+
+void joystickInit() {
+    chip1 = gpiod_chip_open("/dev/gpiochip1");
+
+    config = gpiod_line_config_new();
+
+    settings = gpiod_line_settings_new();
+    gpiod_line_settings_set_direction(settings, GPIOD_LINE_DIRECTION_INPUT);
+
+    gpiod_line_config_add_line_settings(config, offset, 1, settings);
+
+    req_cfg = gpiod_request_config_new();
+    gpiod_request_config_set_consumer(req_cfg, "joystick");
+
+    req = gpiod_chip_request_lines(chip1, req_cfg, config);
+}
+
+void joystickClose() {
+    gpiod_line_request_release(req);
+    gpiod_line_settings_free(settings);   // free settings
+    gpiod_line_config_free(config);       // free line config
+    gpiod_request_config_free(req_cfg);   // free request config
+    gpiod_chip_close(chip1); 
+}
+
 
 int yPos(void) {
     const char* dev = "/dev/spidev0.0";
@@ -70,4 +104,16 @@ const char* direction(void) {
         }
     }
     return "none";
+}
+
+int joystickPressed(void) {
+    if (!gpiod_line_request_get_value(req, offset[0]) && isPressed == 0) {
+        isPressed = 1;
+        return isPressed;
+    }
+    if (gpiod_line_request_get_value(req, offset[0]) && isPressed == 1) {
+        isPressed = 0;
+    }
+
+    return 0;
 }

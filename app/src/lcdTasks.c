@@ -943,7 +943,7 @@ static const uint8_t charMap[128][7][5] = {
 };
 
 
-void asciiToLcd(int fd, const char* inputStr, int x, int y, uint16_t color) {
+void asciiToLcd(int fd, const char* inputStr, int x, int y, int fontsize, uint16_t color) {
     pthread_mutex_lock(&lock);
     isDrawing = 1;
     pthread_mutex_unlock(&lock);
@@ -954,11 +954,15 @@ void asciiToLcd(int fd, const char* inputStr, int x, int y, uint16_t color) {
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 5; j++) {
                 if (chr[i][j] == 1) {
-                    lcd_draw_pixel(fd, xNext + j, y + i, color);
+                    for (int dy = 0; dy < fontsize; dy++) {     // vertical scaling
+                        for (int dx = 0; dx < fontsize; dx++) { // horizontal scaling
+                            lcd_draw_pixel(fd, xNext + j*fontsize + dx, y + i*fontsize + dy, color);
+                        }
+                    }
                 }
             }
         }
-        xNext += 6; // give 1 extra space between chars
+        xNext += 5 * fontsize + 1;
     }
     pthread_mutex_lock(&lock);
     isDrawing = 0;

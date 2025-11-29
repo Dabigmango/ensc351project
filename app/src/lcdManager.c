@@ -4,8 +4,12 @@ enum startSelect startSelector;
 enum allPages currentPage;
 
 pthread_mutex_t selectorLock = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t updateLock = PTHREAD_MUTEX_INITIALIZER;
 
 int selectionChanged = 0;
+int musicPlayerScreenUpdated = 0;
+
+int currentPlaylist = 0;
 
 void startScreen(int fd) {
     // creating start screen
@@ -19,8 +23,7 @@ void startScreen(int fd) {
     alarmClockIcon(fd, WHITE);
     settingsIcon(fd, WHITE);
 
-    startSelector = MUSIC_PLAYER;
-    currentPage = MAIN_SCREEN;
+
 }
 
 void musicPlayerIcon(int fd, uint16_t color) {
@@ -55,15 +58,40 @@ void settingsIcon(int fd, uint16_t color) {
     fillDiamond(fd, 193, 53, 5, 5, color);
 }
 
+void musicPlayerScreen(int fd) {
+    lcd_fill(fd, BLUE);
+    fillBar(fd, 50, 0, 3, 135, BLACK);
+    fillBar(fd, 50, 30, 190, 3, BLACK);
+    asciiToLcd(fd, "Playlists", 60, 12, 2, BLACK);
+    backButton(fd, WHITE);
+}
+
+void backButton(int fd, uint16_t color) {
+    fillCircle(fd, 25, 25, 22, BLACK);
+    fillBar(fd, 15, 24, 20, 3, color);
+    for (int i = 0; i < 4; i++) {
+        fillDiamond(fd, 15 + 3*i, 25 - 3*i, 3, 3, color);
+    }
+    for (int i = 0; i < 4; i++) {
+        fillDiamond(fd, 15 + 3*i, 25 + 3*i, 3, 3, color);
+    }
+}
+
 void* selector(void* arg) {
     int fd = *(int*)arg;
+    startScreen(fd);
+    startSelector = MUSIC_PLAYER;
+    currentPage = MAIN_SCREEN;
     while (1) {
+
+        // selecting display screen
         pthread_mutex_lock(&selectorLock);
         int tempSelectionChanged = selectionChanged;
         pthread_mutex_unlock(&selectorLock);
         if (tempSelectionChanged) {
-            switch (currentPage) {
+            switch (currentPage) { 
                 case MAIN_SCREEN:
+                    startScreen(fd);
                     switch (startSelector) {
                         case MUSIC_PLAYER:
                             musicPlayerIcon(fd, RED);
@@ -83,8 +111,20 @@ void* selector(void* arg) {
                     }
                     break;
                 case MUSIC_PLAYER_SCREEN:
+                    musicPlayerScreen(fd);
+                    if (currentPlaylist == -1) {
+                        backButton(fd, RED);
+                    }
                     break;
                 case ALARM_CLOCK_SCREEN:
+
+
+                    // ruby try to see what i did for the music player screen and copy it however u see fit
+                    // u can make new functions in this file however u want, just label accordingly
+
+
+
+
                     break;
                 case SETTINGS_SCREEN:
                     break;
@@ -92,8 +132,43 @@ void* selector(void* arg) {
             pthread_mutex_lock(&selectorLock);
             selectionChanged = 0;
             pthread_mutex_unlock(&selectorLock);
-            usleep(10000);
         }
+
+        // update music player screen
+        pthread_mutex_lock(&updateLock);
+        int tempMusicPlayerUpdated = musicPlayerScreenUpdated;
+        pthread_mutex_unlock(&updateLock);
+        if (tempMusicPlayerUpdated && (currentPage == MUSIC_PLAYER_SCREEN)) { // display all playlists (that can fit on screen)
+            int total = getNumPlaylists();
+            int window = 6;
+
+            // center window around current selection
+            int start = currentPlaylist - window / 2;
+
+            // clamp window
+            if (start < 0) start = 0;
+            if (start > total - window) start = total - window;
+            if (start < 0) start = 0;
+
+            for (int row = 0; row < window && (start + row) < total; row++) {
+                int playlistIndex = start + row;
+
+                uint16_t color = (playlistIndex == currentPlaylist) ? RED : BLACK;
+
+                fillBar(fd, 50, row * 32 + 30, 190, 2, BLACK);
+                fillBar(fd, 53, row * 32 + 33, 187, 29, BLUE);
+
+                asciiToLcd(fd, getPlaylistName(playlistIndex), 60, row * 32 + 38, 2, color);
+                printf("executing...\n");
+            }
+
+            pthread_mutex_lock(&updateLock);
+            musicPlayerScreenUpdated = 0;
+            pthread_mutex_unlock(&updateLock);
+        }
+
+
+        usleep(10000);
     }
     return NULL;
 }

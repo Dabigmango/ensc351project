@@ -7,12 +7,13 @@
 #include "lcdManager.h"
 #include "joystickInput.h"
 #include "hal/lcd.h"
+#include "hal/joystick.h"
 
 int main() {
     startup();
+    joystickInit();
     int fd = spi_init();
     lcd_init(fd);
-    startScreen(fd);
     pthread_t lcdThread;
     pthread_t lcdManagerThread;
     pthread_t joystickThread;
@@ -28,5 +29,7 @@ int main() {
     pthread_join(lcdManagerThread, NULL);
     pthread_join(lcdThread, NULL);
     lcd_close(fd);
+    joystickClose();
+    freeAll();
     return 0;
 }
