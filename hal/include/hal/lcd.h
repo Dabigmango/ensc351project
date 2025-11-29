@@ -13,6 +13,7 @@
 #include <gpiod.h>
 
 extern volatile int isDrawing;
+extern pthread_mutex_t lock;
 
 int spi_init(void);
 void gpio_init(void);

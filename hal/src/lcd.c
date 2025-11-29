@@ -134,21 +134,18 @@ void* sendScreen(void* arg) {
     printf("started.\n");
     while (1) {
         pthread_mutex_lock(&lock);
-        int update = hasChanged && (!isDrawing);
-        pthread_mutex_unlock(&lock);
+        if (hasChanged && !isDrawing) {
+            hasChanged = 0;  // mark it as being processed
+            pthread_mutex_unlock(&lock);
 
-        update = 0;
-        if (update) {
             printf("sending data\n");
             setSpace(fd, 0, 0, 240, 135);
             lcd_cmd(fd, 0x2C);
             gpio_write(6, 1);
             for (int i = 0; i < (240*135*2 / SAMPLE_SIZE); i++) {
                 write(fd, actualBuff + i * SAMPLE_SIZE, SAMPLE_SIZE);
-            } 
-
-            pthread_mutex_lock(&lock);
-            hasChanged = 0;
+            }
+        } else {
             pthread_mutex_unlock(&lock);
         }
         usleep(1000);
