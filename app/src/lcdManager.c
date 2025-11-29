@@ -112,6 +112,7 @@ void* selector(void* arg) {
                     break;
                 case MUSIC_PLAYER_SCREEN:
                     musicPlayerScreen(fd);
+                    musicPlayerScreenUpdated = 1;
                     if (currentPlaylist == -1) {
                         backButton(fd, RED);
                     }
