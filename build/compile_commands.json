@@ -1,0 +1,68 @@
+[
+{
+  "directory": "/home/mingchen/ensc351/work/myApps/project/build/hal",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc --sysroot=/home/mingchen/beagleboard-rootfs  -I/home/mingchen/beagleboard-rootfs/usr/include -I/home/mingchen/ensc351/work/myApps/project/hal/hal/include -I/home/mingchen/ensc351/work/myApps/project/hal/include -g -std=gnu11 -o CMakeFiles/hal.dir/src/button.c.o -c /home/mingchen/ensc351/work/myApps/project/hal/src/button.c",
+  "file": "/home/mingchen/ensc351/work/myApps/project/hal/src/button.c",
+  "output": "hal/CMakeFiles/hal.dir/src/button.c.o"
+},
+{
+  "directory": "/home/mingchen/ensc351/work/myApps/project/build/hal",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc --sysroot=/home/mingchen/beagleboard-rootfs  -I/home/mingchen/beagleboard-rootfs/usr/include -I/home/mingchen/ensc351/work/myApps/project/hal/hal/include -I/home/mingchen/ensc351/work/myApps/project/hal/include -g -std=gnu11 -o CMakeFiles/hal.dir/src/joystick.c.o -c /home/mingchen/ensc351/work/myApps/project/hal/src/joystick.c",
+  "file": "/home/mingchen/ensc351/work/myApps/project/hal/src/joystick.c",
+  "output": "hal/CMakeFiles/hal.dir/src/joystick.c.o"
+},
+{
+  "directory": "/home/mingchen/ensc351/work/myApps/project/build/hal",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc --sysroot=/home/mingchen/beagleboard-rootfs  -I/home/mingchen/beagleboard-rootfs/usr/include -I/home/mingchen/ensc351/work/myApps/project/hal/hal/include -I/home/mingchen/ensc351/work/myApps/project/hal/include -g -std=gnu11 -o CMakeFiles/hal.dir/src/lcd.c.o -c /home/mingchen/ensc351/work/myApps/project/hal/src/lcd.c",
+  "file": "/home/mingchen/ensc351/work/myApps/project/hal/src/lcd.c",
+  "output": "hal/CMakeFiles/hal.dir/src/lcd.c.o"
+},
+{
+  "directory": "/home/mingchen/ensc351/work/myApps/project/build/app",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc --sysroot=/home/mingchen/beagleboard-rootfs  -I/home/mingchen/beagleboard-rootfs/usr/include -I/home/mingchen/ensc351/work/myApps/project/app/include -I/home/mingchen/ensc351/work/myApps/project/hal/include -I/usr/lib/aarch64-linux-gnu -g -std=gnu11 -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -o CMakeFiles/project.dir/src/bluetooth_manager.c.o -c /home/mingchen/ensc351/work/myApps/project/app/src/bluetooth_manager.c",
+  "file": "/home/mingchen/ensc351/work/myApps/project/app/src/bluetooth_manager.c",
+  "output": "app/CMakeFiles/project.dir/src/bluetooth_manager.c.o"
+},
+{
+  "directory": "/home/mingchen/ensc351/work/myApps/project/build/app",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc --sysroot=/home/mingchen/beagleboard-rootfs  -I/home/mingchen/beagleboard-rootfs/usr/include -I/home/mingchen/ensc351/work/myApps/project/app/include -I/home/mingchen/ensc351/work/myApps/project/hal/include -I/usr/lib/aarch64-linux-gnu -g -std=gnu11 -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -o CMakeFiles/project.dir/src/joystickInput.c.o -c /home/mingchen/ensc351/work/myApps/project/app/src/joystickInput.c",
+  "file": "/home/mingchen/ensc351/work/myApps/project/app/src/joystickInput.c",
+  "output": "app/CMakeFiles/project.dir/src/joystickInput.c.o"
+},
+{
+  "directory": "/home/mingchen/ensc351/work/myApps/project/build/app",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc --sysroot=/home/mingchen/beagleboard-rootfs  -I/home/mingchen/beagleboard-rootfs/usr/include -I/home/mingchen/ensc351/work/myApps/project/app/include -I/home/mingchen/ensc351/work/myApps/project/hal/include -I/usr/lib/aarch64-linux-gnu -g -std=gnu11 -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -o CMakeFiles/project.dir/src/lcdManager.c.o -c /home/mingchen/ensc351/work/myApps/project/app/src/lcdManager.c",
+  "file": "/home/mingchen/ensc351/work/myApps/project/app/src/lcdManager.c",
+  "output": "app/CMakeFiles/project.dir/src/lcdManager.c.o"
+},
+{
+  "directory": "/home/mingchen/ensc351/work/myApps/project/build/app",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc --sysroot=/home/mingchen/beagleboard-rootfs  -I/home/mingchen/beagleboard-rootfs/usr/include -I/home/mingchen/ensc351/work/myApps/project/app/include -I/home/mingchen/ensc351/work/myApps/project/hal/include -I/usr/lib/aarch64-linux-gnu -g -std=gnu11 -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -o CMakeFiles/project.dir/src/lcdTasks.c.o -c /home/mingchen/ensc351/work/myApps/project/app/src/lcdTasks.c",
+  "file": "/home/mingchen/ensc351/work/myApps/project/app/src/lcdTasks.c",
+  "output": "app/CMakeFiles/project.dir/src/lcdTasks.c.o"
+},
+{
+  "directory": "/home/mingchen/ensc351/work/myApps/project/build/app",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc --sysroot=/home/mingchen/beagleboard-rootfs  -I/home/mingchen/beagleboard-rootfs/usr/include -I/home/mingchen/ensc351/work/myApps/project/app/include -I/home/mingchen/ensc351/work/myApps/project/hal/include -I/usr/lib/aarch64-linux-gnu -g -std=gnu11 -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -o CMakeFiles/project.dir/src/main.c.o -c /home/mingchen/ensc351/work/myApps/project/app/src/main.c",
+  "file": "/home/mingchen/ensc351/work/myApps/project/app/src/main.c",
+  "output": "app/CMakeFiles/project.dir/src/main.c.o"
+},
+{
+  "directory": "/home/mingchen/ensc351/work/myApps/project/build/app",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc --sysroot=/home/mingchen/beagleboard-rootfs  -I/home/mingchen/beagleboard-rootfs/usr/include -I/home/mingchen/ensc351/work/myApps/project/app/include -I/home/mingchen/ensc351/work/myApps/project/hal/include -I/usr/lib/aarch64-linux-gnu -g -std=gnu11 -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -o CMakeFiles/project.dir/src/mp3_decoder.c.o -c /home/mingchen/ensc351/work/myApps/project/app/src/mp3_decoder.c",
+  "file": "/home/mingchen/ensc351/work/myApps/project/app/src/mp3_decoder.c",
+  "output": "app/CMakeFiles/project.dir/src/mp3_decoder.c.o"
+},
+{
+  "directory": "/home/mingchen/ensc351/work/myApps/project/build/app",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc --sysroot=/home/mingchen/beagleboard-rootfs  -I/home/mingchen/beagleboard-rootfs/usr/include -I/home/mingchen/ensc351/work/myApps/project/app/include -I/home/mingchen/ensc351/work/myApps/project/hal/include -I/usr/lib/aarch64-linux-gnu -g -std=gnu11 -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -o CMakeFiles/project.dir/src/musicStorage.c.o -c /home/mingchen/ensc351/work/myApps/project/app/src/musicStorage.c",
+  "file": "/home/mingchen/ensc351/work/myApps/project/app/src/musicStorage.c",
+  "output": "app/CMakeFiles/project.dir/src/musicStorage.c.o"
+},
+{
+  "directory": "/home/mingchen/ensc351/work/myApps/project/build/app",
+  "command": "/usr/bin/aarch64-linux-gnu-gcc --sysroot=/home/mingchen/beagleboard-rootfs  -I/home/mingchen/beagleboard-rootfs/usr/include -I/home/mingchen/ensc351/work/myApps/project/app/include -I/home/mingchen/ensc351/work/myApps/project/hal/include -I/usr/lib/aarch64-linux-gnu -g -std=gnu11 -Wall -Werror -Wpedantic -Wextra -fdiagnostics-color -fsanitize=address -pthread -o CMakeFiles/project.dir/src/udpServer.c.o -c /home/mingchen/ensc351/work/myApps/project/app/src/udpServer.c",
+  "file": "/home/mingchen/ensc351/work/myApps/project/app/src/udpServer.c",
+  "output": "app/CMakeFiles/project.dir/src/udpServer.c.o"
+}
+]

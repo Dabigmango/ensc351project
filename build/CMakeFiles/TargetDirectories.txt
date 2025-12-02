@@ -1,0 +1,8 @@
+/home/mingchen/ensc351/work/myApps/project/build/CMakeFiles/edit_cache.dir
+/home/mingchen/ensc351/work/myApps/project/build/CMakeFiles/rebuild_cache.dir
+/home/mingchen/ensc351/work/myApps/project/build/hal/CMakeFiles/hal.dir
+/home/mingchen/ensc351/work/myApps/project/build/hal/CMakeFiles/edit_cache.dir
+/home/mingchen/ensc351/work/myApps/project/build/hal/CMakeFiles/rebuild_cache.dir
+/home/mingchen/ensc351/work/myApps/project/build/app/CMakeFiles/project.dir
+/home/mingchen/ensc351/work/myApps/project/build/app/CMakeFiles/edit_cache.dir
+/home/mingchen/ensc351/work/myApps/project/build/app/CMakeFiles/rebuild_cache.dir
