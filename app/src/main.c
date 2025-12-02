@@ -21,11 +21,13 @@ int main() {
     pthread_create(&lcdThread, NULL, sendScreen, &fd); // send fd to thread
     pthread_create(&lcdManagerThread, NULL, selector, &fd);
     pthread_create(&joystickThread, NULL, getJoystick, NULL);
+    udpServer_start(12345);
 
     // real shit
     while (1) {
         getInput();
     }
+    udpServer_stop();
     pthread_join(joystickThread, NULL);
     pthread_join(lcdManagerThread, NULL);
     pthread_join(lcdThread, NULL);

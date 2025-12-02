@@ -72,7 +72,6 @@ void previousButton(int fd, uint16_t color);
 void nextButton(int fd, uint16_t color);
 
 
-// 
 void* selector(void* arg);
 
 #endif

@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <pthread.h>
+#include "musicStorage.h"
 
 bool udpServer_start(int port);
 void udpServer_stop(void);

@@ -71,6 +71,14 @@ def scan_music_dir():
 # ------------------------------------------------------------
 
 class MS2Gui(tk.Tk):
+    def send_initial_state(self):
+        # Send each playlist
+        for pl_name, songs in self.state["playlists"].items():
+            send_cmd(f"ADD_PLAYLIST {pl_name}")
+            # Send each song inside the playlist
+            for song in songs:
+                send_cmd(f"ADD_SONG {pl_name} {song}")
+
     def __init__(self):
         super().__init__()
         self.title("Music Server")
@@ -80,6 +88,7 @@ class MS2Gui(tk.Tk):
         self.create_widgets()
         self.refresh_all_songs()
         self.refresh_playlists()
+        self.after(100, self.send_initial_state)
 
     # ---------- UI layout ----------
     def create_widgets(self):
@@ -204,6 +213,7 @@ class MS2Gui(tk.Tk):
         save_state(self.state)
         self.new_playlist_name.set("")
         self.refresh_playlists()
+        send_cmd(f"ADD_PLAYLIST {name}")
 
     def delete_playlist(self):
         pl_name = self.playlist_combo.get()
@@ -214,6 +224,7 @@ class MS2Gui(tk.Tk):
         self.state["playlists"].pop(pl_name, None)
         save_state(self.state)
         self.refresh_playlists()
+        send_cmd(f"DELETE_PLAYLIST {pl_name}")
 
     def add_song_to_playlist(self):
         pl_name = self.playlist_combo.get()
@@ -230,6 +241,7 @@ class MS2Gui(tk.Tk):
             songs.append(song)
             save_state(self.state)
             self.refresh_songs_in_playlist()
+            send_cmd(f"ADD_SONG {pl_name} {song}")
 
     def remove_song_from_playlist(self):
         pl_name = self.playlist_combo.get()
@@ -244,6 +256,7 @@ class MS2Gui(tk.Tk):
             songs.remove(song)
             save_state(self.state)
             self.refresh_songs_in_playlist()
+            send_cmd(f"DELETE_SONG {pl_name} {song}")
 
     # ---------- Playback helpers ----------
     def play_selected_from_playlist(self):

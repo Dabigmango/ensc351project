@@ -76,6 +76,56 @@ static void *udpServer_thread(void *arg)
                 printf("[UDP] Bad SET_VOL command\n");
             }
 
+        } else if (strncmp(buf, "ADD_PLAYLIST ", 13) ==0){
+            const char* playlistName = buf + 13;
+            addPlaylist(playlistName);
+        } else if (strncmp(buf, "DELETE_PLAYLIST ", 16) ==0){
+            const char* playlistName = buf + 16;
+            deletePlaylist(playlistName);
+        } else if (strncmp(buf, "ADD_SONG ", 9) ==0){
+            char temp[256];
+            strncpy(temp, buf + 9, sizeof(temp));
+            temp[255] = '\0';
+
+            char *playlist = strtok(temp, " ");
+            char *song     = strtok(NULL, "");
+
+            printf("%s", song);
+
+            char songName[99];
+            strncpy(songName, song, sizeof(songName));
+            songName[98] = '\0'; 
+            size_t len = strlen(song);
+            if (len > 4 && strcmp(song + len - 4, ".mp3") == 0) {
+                songName[len - 4] = '\0';
+            }
+            printf("%s\n", songName);
+
+            if (playlist && song) {
+                addSong(findPlaylist(playlist), songName, song);
+            }
+        } else if (strncmp(buf, "DELETE_SONG ", 12) ==0){
+            char temp[256];
+            strncpy(temp, buf + 9, sizeof(temp));
+            temp[255] = '\0';
+
+            char *playlist = strtok(temp, " ");
+            char *song     = strtok(NULL, "");
+
+            printf("%s", song);
+
+            char songName[99];
+            strncpy(songName, song, sizeof(songName));
+            songName[98] = '\0'; 
+            size_t len = strlen(song);
+            if (len > 4 && strcmp(song + len - 4, ".mp3") == 0) {
+                songName[len - 4] = '\0';
+            }
+            printf("%s\n", songName);
+
+            if (playlist && song) {
+                deleteSong(findPlaylist(playlist), songName);
+            }
         } else {
             printf("[UDP] Unknown command\n");
         }

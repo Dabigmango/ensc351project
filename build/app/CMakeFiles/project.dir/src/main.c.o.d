@@ -100,14 +100,11 @@ app/CMakeFiles/project.dir/src/main.c.o: \
  /usr/aarch64-linux-gnu/include/asm-generic/sockios.h \
  /usr/aarch64-linux-gnu/include/bits/types/struct_osockaddr.h \
  /usr/aarch64-linux-gnu/include/bits/in.h \
- /home/mingchen/ensc351/work/myApps/project/app/include/mp3_decoder.h \
- /home/mingchen/ensc351/work/myApps/project/app/include/bluetooth_manager.h \
  /home/mingchen/ensc351/work/myApps/project/app/include/musicStorage.h \
  /home/mingchen/ensc351/work/myApps/project/app/include/lcdManager.h \
  /usr/lib/gcc-cross/aarch64-linux-gnu/14/include/stdatomic.h \
  /home/mingchen/ensc351/work/myApps/project/app/include/mp3_decoder.h \
  /home/mingchen/ensc351/work/myApps/project/app/include/bluetooth_manager.h \
- /home/mingchen/ensc351/work/myApps/project/app/include/musicStorage.h \
  /home/mingchen/ensc351/work/myApps/project/app/include/lcdTasks.h \
  /home/mingchen/ensc351/work/myApps/project/hal/include/hal/lcd.h \
  /usr/aarch64-linux-gnu/include/sys/ioctl.h \
@@ -136,6 +133,9 @@ app/CMakeFiles/project.dir/src/main.c.o: \
  /usr/aarch64-linux-gnu/include/bits/stat.h \
  /usr/aarch64-linux-gnu/include/bits/struct_stat.h \
  /home/mingchen/beagleboard-rootfs/usr/include/gpiod.h \
+ /home/mingchen/ensc351/work/myApps/project/app/include/mp3_decoder.h \
+ /home/mingchen/ensc351/work/myApps/project/app/include/bluetooth_manager.h \
+ /home/mingchen/ensc351/work/myApps/project/app/include/musicStorage.h \
  /home/mingchen/ensc351/work/myApps/project/app/include/lcdTasks.h \
  /home/mingchen/ensc351/work/myApps/project/app/include/lcdManager.h \
  /home/mingchen/ensc351/work/myApps/project/app/include/joystickInput.h \

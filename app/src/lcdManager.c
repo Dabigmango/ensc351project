@@ -64,7 +64,7 @@ void settingsIcon(int fd, uint16_t color) {
 
 void musicPlayerScreen(int fd) {
     lcd_fill(fd, BLUE);
-    fillBar(fd, 50, 0, 3, 135, BLACK);
+    fillBar(fd, 50, 0, 3, 134, BLACK);
     fillBar(fd, 50, 30, 190, 3, BLACK);
     asciiToLcd(fd, "Playlists", 60, 12, 2, BLACK);
     backButton(fd, WHITE);
@@ -72,7 +72,7 @@ void musicPlayerScreen(int fd) {
 
 void songsScreen(int fd) {
     lcd_fill(fd, BLUE);
-    fillBar(fd, 50, 0, 3, 135, BLACK);
+    fillBar(fd, 50, 0, 3, 134, BLACK);
     fillBar(fd, 50, 30, 190, 3, BLACK);
     asciiToLcd(fd, getPlaylistName(currentPlaylist), 60, 12, 2, BLACK);
     backButton(fd, WHITE);
@@ -80,7 +80,7 @@ void songsScreen(int fd) {
 
 void playScreen(int fd) {
     lcd_fill(fd, BLUE);
-    fillBar(fd, 50, 0, 3, 135, BLACK);
+    fillBar(fd, 50, 0, 3, 134, BLACK);
     fillBar(fd, 50, 30, 190, 3, BLACK);
     const char* songPlaying = getSongName(getPlaylistName(currentPlaylist), currentSongSelected);
     char shorted[11];
@@ -174,10 +174,6 @@ void* selector(void* arg) {
                     }
                     break;
                 case MUSIC_PLAYER_SCREEN:
-
-                    // creates the musicplayer screen
-                    // tells later code the screen has been updated
-                    // set special value if hovering back button
                     musicPlayerScreen(fd);
                     musicPlayerScreenUpdated = 1;
                     if (currentPlaylist == -1) {
@@ -290,7 +286,14 @@ void* selector(void* arg) {
                 fillBar(fd, 50, row * 32 + 30, 190, 2, BLACK);
                 fillBar(fd, 53, row * 32 + 33, 187, 29, BLUE);
 
-                asciiToLcd(fd, getSongName(getPlaylistName(currentPlaylist), songIndex), 60, row * 32 + 38, 2, color);
+                char shorted[11];
+                strncpy(shorted, getSongName(getPlaylistName(currentPlaylist), songIndex), 7);
+                shorted[7] = '.';
+                shorted[8] = '.';
+                shorted[9] = '.';
+                shorted[10] = '\0';
+
+                asciiToLcd(fd, shorted, 60, row * 32 + 38, 2, color);
             }
 
             pthread_mutex_lock(&updateLock);

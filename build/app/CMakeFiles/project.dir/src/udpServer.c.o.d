@@ -99,4 +99,37 @@ app/CMakeFiles/project.dir/src/udpServer.c.o: \
  /usr/aarch64-linux-gnu/include/bits/setjmp.h \
  /usr/aarch64-linux-gnu/include/bits/types/struct___jmp_buf_tag.h \
  /usr/aarch64-linux-gnu/include/bits/pthread_stack_min-dynamic.h \
- /usr/aarch64-linux-gnu/include/bits/pthread_stack_min.h
+ /usr/aarch64-linux-gnu/include/bits/pthread_stack_min.h \
+ /home/mingchen/ensc351/work/myApps/project/app/include/musicStorage.h \
+ /home/mingchen/ensc351/work/myApps/project/app/include/lcdManager.h \
+ /usr/lib/gcc-cross/aarch64-linux-gnu/14/include/stdatomic.h \
+ /home/mingchen/ensc351/work/myApps/project/app/include/mp3_decoder.h \
+ /home/mingchen/ensc351/work/myApps/project/app/include/bluetooth_manager.h \
+ /home/mingchen/ensc351/work/myApps/project/app/include/lcdTasks.h \
+ /home/mingchen/ensc351/work/myApps/project/hal/include/hal/lcd.h \
+ /usr/aarch64-linux-gnu/include/sys/ioctl.h \
+ /usr/aarch64-linux-gnu/include/bits/ioctls.h \
+ /usr/aarch64-linux-gnu/include/asm/ioctls.h \
+ /usr/aarch64-linux-gnu/include/asm-generic/ioctls.h \
+ /usr/aarch64-linux-gnu/include/linux/ioctl.h \
+ /usr/aarch64-linux-gnu/include/asm/ioctl.h \
+ /usr/aarch64-linux-gnu/include/asm-generic/ioctl.h \
+ /usr/aarch64-linux-gnu/include/bits/ioctl-types.h \
+ /usr/aarch64-linux-gnu/include/sys/ttydefaults.h \
+ /usr/lib/gcc-cross/aarch64-linux-gnu/14/include/stdint.h \
+ /usr/aarch64-linux-gnu/include/stdint.h \
+ /usr/aarch64-linux-gnu/include/bits/wchar.h \
+ /usr/aarch64-linux-gnu/include/bits/stdint-least.h \
+ /usr/aarch64-linux-gnu/include/linux/spi/spidev.h \
+ /usr/aarch64-linux-gnu/include/linux/types.h \
+ /usr/aarch64-linux-gnu/include/asm/types.h \
+ /usr/aarch64-linux-gnu/include/asm-generic/types.h \
+ /usr/aarch64-linux-gnu/include/asm-generic/int-ll64.h \
+ /usr/aarch64-linux-gnu/include/linux/spi/spi.h \
+ /usr/aarch64-linux-gnu/include/linux/const.h \
+ /usr/aarch64-linux-gnu/include/fcntl.h \
+ /usr/aarch64-linux-gnu/include/bits/fcntl.h \
+ /usr/aarch64-linux-gnu/include/bits/fcntl-linux.h \
+ /usr/aarch64-linux-gnu/include/bits/stat.h \
+ /usr/aarch64-linux-gnu/include/bits/struct_stat.h \
+ /home/mingchen/beagleboard-rootfs/usr/include/gpiod.h
