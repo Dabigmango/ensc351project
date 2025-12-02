@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <pthread.h>
+#include "mp3_decoder_advanced.h"
 #include "musicStorage.h"
 
 bool udpServer_start(int port);

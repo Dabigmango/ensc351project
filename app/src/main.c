@@ -2,6 +2,7 @@
 #include <pthread.h>
 #include "udpServer.h"
 #include "mp3_decoder.h"
+#include "mp3_decoder_advanced.h"
 #include "bluetooth_manager.h"
 #include "musicStorage.h"
 #include "lcdTasks.h"
@@ -13,6 +14,7 @@
 int main() {
     startup();
     joystickInit();
+    mp3_decoder_advanced_init();
     int fd = spi_init();
     lcd_init(fd);
     pthread_t lcdThread;
@@ -28,6 +30,7 @@ int main() {
         getInput();
     }
     udpServer_stop();
+    mp3_decoder_advanced_cleanup();
     pthread_join(joystickThread, NULL);
     pthread_join(lcdManagerThread, NULL);
     pthread_join(lcdThread, NULL);

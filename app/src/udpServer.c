@@ -10,22 +10,73 @@ static bool g_running = false;
 
 // ---------- These will later call your real music code ----------
 
+static pthread_t playback_thread;
+
+static void* playback_loop(void* arg) {
+    (void)arg;
+    while (mp3_decoder_is_playing() || mp3_decoder_is_paused()) {
+        int result = mp3_decoder_process();
+        if (result == 1) break;  // song finished
+        else if (result < 0) {
+            printf("Playback error!\n");
+            break;
+        }
+        usleep(10000); // small sleep to avoid 100% CPU
+    }
+    return NULL;
+}
+
 static void handlePlayCommand(const char *filename)
 {
     // TODO: replace printf with your real "play this file" function.
     // e.g. project_play_file(filename);
+    mp3_decoder_stop();
+    pthread_join(playback_thread, NULL);  // wait for previous thread to finish
+
+    // Load and start new file
+    if (mp3_decoder_load_file(filename) == 0) {
+        mp3_decoder_play();
+        
+        // Launch playback thread
+        if (pthread_create(&playback_thread, NULL, playback_loop, NULL) != 0) {
+            printf("Failed to create playback thread\n");
+        }
+    } else {
+        printf("Failed to load file: %s\n", filename);
+    }
     printf("[UDP] PLAY %s\n", filename);
 }
 
 static void handleStopCommand(void)
 {
-    // TODO: call your real stop function.
+    // Stop playback in mpg123/ALSA
+    mp3_decoder_stop();
+
+    // Wait for the playback thread to finish
+    pthread_join(playback_thread, NULL);
     printf("[UDP] STOP\n");
 }
 
-static void handleSetVolCommand(int vol)
+static void handlePauseCommand(void)
 {
-    // TODO: call your real volume function.
+    // Pause playback
+    mp3_decoder_pause();
+
+    printf("[UDP] PAUSE\n");
+}
+
+static void handleResumeCommand(void) 
+{
+    mp3_decoder_play();
+    printf("[UDP] PLAY\n");
+}
+
+static void handleVolumeCommand(int vol)
+{
+    if (vol < 0) vol = 0;
+    if (vol > 100) vol = 100;
+
+    mp3_decoder_set_volume(vol);
     printf("[UDP] SET_VOL %d\n", vol);
 }
 

@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include "mp3_decoder.h"
+#include "mp3_decoder_advanced.h"
 #include "bluetooth_manager.h"
 #include "musicStorage.h"
 #include "lcdTasks.h"

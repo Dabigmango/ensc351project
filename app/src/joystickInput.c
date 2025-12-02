@@ -57,16 +57,27 @@ void* getJoystick(void* arg) {
                     switch (currentFunction) { // need function to stop/pause
                         case BACK_BUTTON:
                             currentPage = SONGS_SCREEN;
+                            mp3_decoder_stop();
                             break;
                         case PREVIOUS:
+                            mp3_decoder_stop();
                             isPlaying = 0;
                             currentSongSelected--;
+                            mp3_decoder_load_file(getSongName(currentPlaylist, currentSongSelected));
                             break;
                         case NEXT:
+                            mp3_decoder_stop();
                             isPlaying = 0;
                             currentSongSelected++;
+                            mp3_decoder_load_file(getSongName(currentPlaylist, currentSongSelected));
                             break;
                         case PAUSING:
+                            if (isPlaying) {
+                                mp3_decoder_pause();
+                            } else {
+                                mp3_decoder_play();
+                            }
+                            isPlaying = !isPlaying;
                             break;
                     }
                     break;

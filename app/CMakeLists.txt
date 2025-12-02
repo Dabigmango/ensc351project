@@ -19,6 +19,7 @@ target_include_directories(project PRIVATE
 
 # --- Link against HAL library and libgpiod ---
 target_link_libraries(project PRIVATE
+ asound
  hal
  ${LIBGPIOD_LIBRARIES}
 )
