@@ -96,6 +96,11 @@ void playScreen(int fd) {
     nextButton(fd, WHITE);
 }
 
+void alarmScreen(int fd) {
+    lcd_fill(fd, BLUE);
+    
+}
+
 void playButton(int fd, uint16_t color) {
     if (isPlaying) {
         fillBar(fd, 141, 50, 3, 15, color);
@@ -185,14 +190,10 @@ void* selector(void* arg) {
                     }
                     break;
                 case ALARM_CLOCK_SCREEN:
-
-
+                    alarmScreen(fd);
                     // ruby try to see what i did for the music player screen and copy it however u see fit
                     // u can make new functions in this file however u want, just label accordingly
-
-
-
-
+                    
                     break;
                 case SETTINGS_SCREEN:
                     break;
