@@ -57,7 +57,7 @@ static void handleStopCommand(void)
     printf("[UDP] STOP\n");
 }
 
-static void handlePauseCommand(void)
+/*static void handlePauseCommand(void)
 {
     // Pause playback
     mp3_decoder_pause();
@@ -69,7 +69,7 @@ static void handleResumeCommand(void)
 {
     mp3_decoder_play();
     printf("[UDP] PLAY\n");
-}
+}*/
 
 static void handleVolumeCommand(int vol)
 {
@@ -122,7 +122,7 @@ static void *udpServer_thread(void *arg)
         } else if (strncmp(buf, "SET_VOL ", 8) == 0) {
             int vol = 0;
             if (sscanf(buf + 8, "%d", &vol) == 1) {
-                handleSetVolCommand(vol);
+                handleVolumeCommand(vol);
             } else {
                 printf("[UDP] Bad SET_VOL command\n");
             }

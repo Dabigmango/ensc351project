@@ -7,6 +7,9 @@
 #include <pthread.h>
 #include <stdatomic.h>
 #include "mp3_decoder.h"
+#include "clock.h"
+#include "alarmClock.h"
+#include "clockDisplay.h"
 #include "bluetooth_manager.h"
 #include "musicStorage.h"
 #include "lcdTasks.h"
@@ -31,6 +34,12 @@ enum allPages { // add songs screen, add current song screen
     PLAYING_SONG
 };
 
+enum outputDevice {
+    LOCAL,
+    BLUETOOTH,
+    BACK
+};
+
 enum startSelect {
     MUSIC_PLAYER,
     ALARM_CLOCK,
@@ -44,6 +53,8 @@ enum songFunctions { // maybe add shuffle & replay if have time
     NEXT
 };
 
+
+extern enum outputDevice currentOutputDevice;
 extern enum allPages currentPage;
 extern enum startSelect startSelector;
 extern enum songFunctions currentFunction;
@@ -57,6 +68,7 @@ extern int playlistScreenUpdated;
 
 extern int currentPlaylist;
 extern int currentSongSelected;
+extern int clockSelect;
 extern int isPlaying;
 
 void startScreen(int fd);

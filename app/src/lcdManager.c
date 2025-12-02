@@ -3,6 +3,7 @@
 enum startSelect startSelector;
 enum allPages currentPage;
 enum songFunctions currentFunction;
+enum outputDevice currentOutputDevice;
 
 pthread_mutex_t selectorLock = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t updateLock = PTHREAD_MUTEX_INITIALIZER;
@@ -14,6 +15,7 @@ int playlistScreenUpdated = 0;
 int currentPlaylist = 0;
 int currentSongSelected = 0;
 int isPlaying = 0;
+int clockSelect = 0;
 
 void startScreen(int fd) {
     // creating start screen
@@ -60,6 +62,21 @@ void settingsIcon(int fd, uint16_t color) {
     fillDiamond(fd, 165, 81, 5, 5, color);
     fillDiamond(fd, 165, 53, 5, 5, color);
     fillDiamond(fd, 193, 53, 5, 5, color);
+}
+
+void settingScreen(int fd) {
+    asciiToLcd(fd, "Output Device", 60, 40, 1, BLACK);
+    asciiToLcd(fd, "Local", 50, 80, 1, WHITE);
+    asciiToLcd(fd, "Bluetooth", 160, 80, 1, WHITE);
+    backButton(fd, WHITE);
+}
+
+void clockChoice(int fd) {
+    fillCircle(fd, 180, 67, 10, RED);
+    fillCircle(fd, 180, 67, 8, RED);
+    char tempChoice[2];
+    snprintf(tempChoice, sizeof(tempChoice), "%d", clockSelect);
+    asciiToLcd(fd, tempChoice, 176, 64, 1, RED);
 }
 
 void musicPlayerScreen(int fd) {
@@ -138,6 +155,7 @@ void* selector(void* arg) {
     startSelector = MUSIC_PLAYER;
     currentPage = MAIN_SCREEN;
     currentFunction = PAUSING;
+    currentOutputDevice = LOCAL;
     while (1) {
 
         // selecting display screen
@@ -182,15 +200,25 @@ void* selector(void* arg) {
                     break;
                 case ALARM_CLOCK_SCREEN:
 
-
                     // ruby try to see what i did for the music player screen and copy it however u see fit
                     // u can make new functions in this file however u want, just label accordingly
-
-
-
+                    display_clock_menu(fd);
+                    clockChoice(fd);
 
                     break;
                 case SETTINGS_SCREEN:
+                    settingScreen(fd);
+                    switch (currentOutputDevice) {
+                        case BACK:
+                            backButton(fd, RED);
+                            break;
+                        case LOCAL:
+                            asciiToLcd(fd, "Local", 50, 80, 1, RED);
+                            break;
+                        case BLUETOOTH:    
+                            asciiToLcd(fd, "Bluetooth", 160, 80, 1, RED);
+                            break;
+                    }
                     break;
                 case SONGS_SCREEN:
                     songsScreen(fd);

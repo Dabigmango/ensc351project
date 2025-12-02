@@ -25,10 +25,7 @@ int main() {
     pthread_create(&joystickThread, NULL, getJoystick, NULL);
     udpServer_start(12345);
 
-    // real shit
-    while (1) {
-        getInput();
-    }
+
     udpServer_stop();
     mp3_decoder_advanced_cleanup();
     pthread_join(joystickThread, NULL);

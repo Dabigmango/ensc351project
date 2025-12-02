@@ -1,5 +1,7 @@
 #include "joystickInput.h"
 
+static Song* s;
+
 void* getJoystick(void* arg) {
     (void)arg;
     while (1) {
@@ -34,8 +36,9 @@ void* getJoystick(void* arg) {
 
 
                     // ruby
-
-
+                    if (clockSelect == 0) {
+                        currentPage = MAIN_SCREEN;
+                    }
 
 
 
@@ -44,6 +47,9 @@ void* getJoystick(void* arg) {
 
                     break;
                 case SETTINGS_SCREEN:
+                    if (currentOutputDevice == BACK) {
+                        currentPage = MAIN_SCREEN;
+                    }
                     break;
                 case SONGS_SCREEN:
                     if (currentSongSelected == -1) {
@@ -63,13 +69,15 @@ void* getJoystick(void* arg) {
                             mp3_decoder_stop();
                             isPlaying = 0;
                             currentSongSelected--;
-                            mp3_decoder_load_file(getSongName(currentPlaylist, currentSongSelected));
+                            s = findSong(findPlaylist(getPlaylistName(currentPlaylist)), getSongName(getPlaylistName(currentPlaylist), currentSongSelected));
+                            mp3_decoder_load_file(s->path);
                             break;
                         case NEXT:
                             mp3_decoder_stop();
                             isPlaying = 0;
                             currentSongSelected++;
-                            mp3_decoder_load_file(getSongName(currentPlaylist, currentSongSelected));
+                            s = findSong(findPlaylist(getPlaylistName(currentPlaylist)), getSongName(getPlaylistName(currentPlaylist), currentSongSelected));
+                            mp3_decoder_load_file(s->path);
                             break;
                         case PAUSING:
                             if (isPlaying) {
@@ -100,7 +108,8 @@ void* getJoystick(void* arg) {
                     break;
                 case ALARM_CLOCK_SCREEN:
 
-
+                    clockSelect = (clockSelect - 1 + 7) % 7;
+                    break;
 
                     // ruby
 
@@ -113,6 +122,7 @@ void* getJoystick(void* arg) {
 
                     break;
                 case SETTINGS_SCREEN:
+                    currentOutputDevice = (currentOutputDevice - 1 + 3) % 3;
                     break;
                 case SONGS_SCREEN:
                     if (currentSongSelected >= 0) {
@@ -140,7 +150,8 @@ void* getJoystick(void* arg) {
                     break;
                 case ALARM_CLOCK_SCREEN:
 
-
+                    clockSelect = (clockSelect + 1) % 7;
+                    break;
 
 
                     // ruby
@@ -157,6 +168,7 @@ void* getJoystick(void* arg) {
 
                     break;
                 case SETTINGS_SCREEN:
+                    currentOutputDevice = (currentOutputDevice + 1) % 3;
                     break;
                 case SONGS_SCREEN:
                     if (currentSongSelected < 0) {
@@ -164,7 +176,7 @@ void* getJoystick(void* arg) {
                     }
                     break;
                 case PLAYING_SONG:
-                    currentFunction = (currentFunction + 1) % 3;
+                    currentFunction = (currentFunction + 1) % 4;
                     break;
             }
             pthread_mutex_lock(&selectorLock);

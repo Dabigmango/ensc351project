@@ -64,6 +64,7 @@ app/CMakeFiles/project.dir/src/joystickInput.c.o: \
  /usr/aarch64-linux-gnu/include/bits/pthread_stack_min-dynamic.h \
  /usr/aarch64-linux-gnu/include/bits/pthread_stack_min.h \
  /home/mingchen/ensc351/work/myApps/project/app/include/mp3_decoder.h \
+ /home/mingchen/ensc351/work/myApps/project/app/include/mp3_decoder_advanced.h \
  /home/mingchen/ensc351/work/myApps/project/app/include/bluetooth_manager.h \
  /home/mingchen/ensc351/work/myApps/project/app/include/musicStorage.h \
  /usr/aarch64-linux-gnu/include/stdlib.h \
@@ -84,6 +85,10 @@ app/CMakeFiles/project.dir/src/joystickInput.c.o: \
  /usr/aarch64-linux-gnu/include/strings.h \
  /home/mingchen/ensc351/work/myApps/project/app/include/lcdManager.h \
  /usr/lib/gcc-cross/aarch64-linux-gnu/14/include/stdatomic.h \
+ /home/mingchen/ensc351/work/myApps/project/app/include/clock.h \
+ /usr/lib/gcc-cross/aarch64-linux-gnu/14/include/stdbool.h \
+ /home/mingchen/ensc351/work/myApps/project/app/include/alarmClock.h \
+ /home/mingchen/ensc351/work/myApps/project/app/include/clockDisplay.h \
  /home/mingchen/ensc351/work/myApps/project/app/include/lcdTasks.h \
  /home/mingchen/ensc351/work/myApps/project/hal/include/hal/lcd.h \
  /usr/aarch64-linux-gnu/include/sys/ioctl.h \
@@ -119,5 +124,4 @@ app/CMakeFiles/project.dir/src/joystickInput.c.o: \
  /usr/aarch64-linux-gnu/include/bits/stat.h \
  /usr/aarch64-linux-gnu/include/bits/struct_stat.h \
  /home/mingchen/beagleboard-rootfs/usr/include/gpiod.h \
- /usr/lib/gcc-cross/aarch64-linux-gnu/14/include/stdbool.h \
  /home/mingchen/ensc351/work/myApps/project/hal/include/hal/joystick.h
