@@ -9,12 +9,17 @@
 #include "joystickInput.h"
 #include "hal/lcd.h"
 #include "hal/joystick.h"
+#include "alarmClock.h"
 
 int main() {
     startup();
     joystickInit();
     int fd = spi_init();
     lcd_init(fd);
+    init_time_system();
+    init_alarms();
+    load_alarms_from_file("alarms.dat");
+    start_alarm_monitor();
     pthread_t lcdThread;
     pthread_t lcdManagerThread;
     pthread_t joystickThread;
@@ -31,8 +36,11 @@ int main() {
     pthread_join(joystickThread, NULL);
     pthread_join(lcdManagerThread, NULL);
     pthread_join(lcdThread, NULL);
+    save_alarms_to_file("alarms.dat");
+    stop_alarm_monitor();
     lcd_close(fd);
     joystickClose();
     freeAll();
     return 0;
+
 }
